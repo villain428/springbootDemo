@@ -1,6 +1,6 @@
 #服务启动端口
 server :  
-  port :  8086
+  port :  8080
 
 #数据库配置
 spring:
@@ -48,7 +48,4 @@ logging:
 
 task:
     cron:0 0/5 * * * ?
-villain:
-  excel:
-    path: C:\Users\user\Desktop\1\test.xlsx
 
