@@ -42,5 +42,4 @@ public class Application  extends SpringBootServletInitializer implements Embedd
 	public void customize(ConfigurableEmbeddedServletContainer container) {
 		container.setPort(port);
 	}
-
 }
