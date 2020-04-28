@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling // 启用定时任务
 public class Task {
 	
-    @Scheduled(cron="0 0/1 * * * ?")
+    @Scheduled(cron="0 0/20 * * * ?")
 	public void run(){
 		System.out.println("Scheduled Running...");
 	}

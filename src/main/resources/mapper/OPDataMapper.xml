@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccccit.spring.boot.mapper.OPDataMapper" >
+    
+    <select id="getOPOrgs" resultType="map">
+    	SELECT
+			o.pk_org,
+			o.org_code,
+			o.org_name,
+			o.pk_admin 
+		FROM
+			bd_org o 
+		WHERE
+			o.is_carrier = 'N' 
+		AND 
+			o.is_shipper = 'N'
+		ORDER BY
+			o.org_code
+    </select>
+</mapper>

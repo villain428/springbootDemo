@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccccit.spring.boot.mapper.ClearDataMapper" >
+
+    <delete id="deleteAuthResourceUrl">
+        DELETE 
+		FROM
+			auth_resource_url T 
+		WHERE
+			T.pk_resource IN ( SELECT ar.pk_resource FROM auth_resource ar WHERE ar.pk_system = #{systemCode} )
+    </delete>
+    <delete id="deleteAuthUserResource">
+        DELETE 
+		FROM
+			auth_user_resource T 
+		WHERE
+			T.pk_resource IN ( SELECT ar.pk_resource FROM auth_resource ar WHERE ar.pk_system = #{systemCode} )
+    </delete>
+    <delete id="deleteAuthRoleResourceTemplate">
+        DELETE 
+		FROM
+			auth_role_resource_template T 
+		WHERE
+			T.pk_system = #{systemCode}
+    </delete>
+    <delete id="deleteAuthResource">
+        DELETE 
+		FROM
+			auth_resource T 
+		WHERE
+			T.pk_system = #{systemCode}
+    </delete>
+</mapper>
