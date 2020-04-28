@@ -19,9 +19,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * @version V2.0.0
  */
 
-@SpringBootApplication(exclude = MybatisAutoConfiguration.class)
-@ServletComponentScan
-@EnableAutoConfiguration
+@SpringBootApplication()
 @MapperScan("com.ccccit.spring.boot.mapper")
 public class Application  extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 

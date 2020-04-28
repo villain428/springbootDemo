@@ -1,13 +1,10 @@
 package com.ccccit.spring.boot.controller;
 
 
-import com.ccccit.spring.boot.utils.SqlConstants;
-import com.ccccit.spring.boot.service.DataService;
-import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ccccit.spring.boot.mapper.DataMapper;
+import io.swagger.annotations.Api;
 
 
 /**
@@ -18,11 +15,5 @@ import com.ccccit.spring.boot.mapper.DataMapper;
 @RequestMapping(value="/test")
 public class TestCtrl {
 
-    @Autowired
-    private DataService dataService;
-
-    @GetMapping(value="/showTime")
-    public Object test() throws Exception {
-        return dataService.doExcute();
-    }
+  
 }
