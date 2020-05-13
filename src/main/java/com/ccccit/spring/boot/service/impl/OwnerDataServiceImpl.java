@@ -78,7 +78,7 @@ public class OwnerDataServiceImpl implements DataService {
     	int recordCount = clearDataService.doClear(Constants.SCM_OW);
     	System.out.println("刪除了" + recordCount + "条记录");
     	
-    	ExcelUtils.init("C:\\Users\\user\\Desktop\\20200204\\权限控制列表.xlsx");
+    	ExcelUtils.init(Constants.EXCEL_PATH);
     	initRoleMap();
     	dealOwnerMenu();
     	dealOwnerFunction();

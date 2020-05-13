@@ -61,7 +61,7 @@ public class ManagerDataServiceImpl implements DataService {
     	int recordCount = clearDataService.doClear(Constants.SCM_MG);
     	System.out.println("刪除了" + recordCount + "条记录");
     	
-    	ExcelUtils.init("C:\\Users\\user\\Desktop\\20200204\\权限控制列表.xlsx");
+    	ExcelUtils.init(Constants.EXCEL_PATH);
     	dealMenu();
     	dealFunction();
     	
