@@ -201,13 +201,14 @@ public class OwnerDataServiceImpl implements DataService {
     	String currentLevel2PK = null;
     	for(int i = 0; i < count;) {
     		String level1Value = ExcelUtils.getCellValue(sheetNo, i, 0);
-    		if(level1Value != null) {
+    		if(StringUtils.isNotEmpty(level1Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
     			ar.setPk_system(Constants.SCM_OW);
             	ar.setRes_code(ExcelUtils.getCellValue(sheetNo, i, 3));
         		ar.setRes_name(level1Value);
         		ar.setRes_sname(level1Value);
         		ar.setRes_type("FUNCTION");
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 6));
         		currentLevel1PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
@@ -216,13 +217,14 @@ public class OwnerDataServiceImpl implements DataService {
         		continue;
     		}
     		String level2Value = ExcelUtils.getCellValue(sheetNo, i, 1);
-    		if(level2Value != null) {
+    		if(StringUtils.isNotEmpty(level2Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
             	ar.setRes_code(ExcelUtils.getCellValue(sheetNo, i, 3));
         		ar.setRes_name(level2Value);
         		ar.setRes_sname(level2Value);
         		ar.setRes_type("FUNCTION");
         		ar.setPk_parent(currentLevel1PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 6));
         		currentLevel2PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
@@ -231,13 +233,14 @@ public class OwnerDataServiceImpl implements DataService {
         		continue;
     		}
     		String level3Value = ExcelUtils.getCellValue(sheetNo, i, 2);
-    		if(level3Value != null) {
+    		if(StringUtils.isNotEmpty(level3Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
             	ar.setRes_code(ExcelUtils.getCellValue(sheetNo, i, 3));
         		ar.setRes_name(level3Value);
         		ar.setRes_sname(level3Value);
         		ar.setRes_type("FUNCTION");
         		ar.setPk_parent(currentLevel2PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 6));
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
         		dealFunctionTemplate(i,ar.getPk_resource(), authRoleResourceTemplateList);
@@ -261,26 +264,28 @@ public class OwnerDataServiceImpl implements DataService {
     	List<AuthResource> authResourceList = new ArrayList<AuthResource>();
     	List<AuthResourceUrl> authResourceUrlList = new ArrayList<AuthResourceUrl>();
     	List<AuthRoleResourceTemplate> authRoleResourceTemplatelList = new ArrayList<AuthRoleResourceTemplate>();
-    	int count = ExcelUtils.getRowCount(7);
+    	int sheetNo = 7;
+    	int count = ExcelUtils.getRowCount(sheetNo);
     	String level_1_code = "00";
     	String level_2_code = "00";
     	String level_3_code = "00";
     	String currentLevel1PK = null;
     	String currentLevel2PK = null;
     	for(int i = 0; i < count;) {
-    		String level1Value = ExcelUtils.getCellValue(7, i, 0);
-    		if(level1Value != null) {
+    		String level1Value = ExcelUtils.getCellValue(sheetNo, i, 0);
+    		if(StringUtils.isNotEmpty(level1Value)) {
     			level_2_code = "00";
     			level_3_code = "00";
     			AuthResource ar = AuthResourceFactory.getBean();
     			ar.setPk_system(Constants.SCM_OW);
     			level_1_code = getLevelCode(level_1_code);
             	ar.setRes_code("OW_MENU_" + level_1_code);
-            	ar.setRes_url(ExcelUtils.getCellValue(7, i, 3));
-        		ar.setRes_icon(ExcelUtils.getCellValue(7, i, 4));
+            	ar.setRes_url(ExcelUtils.getCellValue(sheetNo, i, 3));
+        		ar.setRes_icon(ExcelUtils.getCellValue(sheetNo, i, 4));
         		ar.setRes_name(level1Value);
         		ar.setRes_sname(level1Value);
         		ar.setRes_type("MENU");
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 7));
         		currentLevel1PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		
@@ -289,18 +294,19 @@ public class OwnerDataServiceImpl implements DataService {
         		i++;
         		continue;
     		}
-    		String level2Value = ExcelUtils.getCellValue(7, i, 1);
-    		if(level2Value != null) {
+    		String level2Value = ExcelUtils.getCellValue(sheetNo, i, 1);
+    		if(StringUtils.isNotEmpty(level2Value)) {
     			level_3_code = "00";
     			AuthResource ar = AuthResourceFactory.getBean();
     			level_2_code = getLevelCode(level_2_code);
             	ar.setRes_code("OW_MENU_" + level_1_code + level_2_code);
-            	ar.setRes_url(ExcelUtils.getCellValue(7, i, 3));
-        		ar.setRes_icon(ExcelUtils.getCellValue(7, i, 4));
+            	ar.setRes_url(ExcelUtils.getCellValue(sheetNo, i, 3));
+        		ar.setRes_icon(ExcelUtils.getCellValue(sheetNo, i, 4));
         		ar.setRes_name(level2Value);
         		ar.setRes_sname(level2Value);
         		ar.setRes_type("MENU");
         		ar.setPk_parent(currentLevel1PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 7));
         		currentLevel2PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealMenuUrl(i, ar.getPk_resource(), authResourceUrlList);
@@ -308,17 +314,18 @@ public class OwnerDataServiceImpl implements DataService {
         		i++;
         		continue;
     		}
-    		String level3Value = ExcelUtils.getCellValue(7, i, 2);
-    		if(level3Value != null) {
+    		String level3Value = ExcelUtils.getCellValue(sheetNo, i, 2);
+    		if(StringUtils.isNotEmpty(level3Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
     			level_3_code = getLevelCode(level_3_code);
             	ar.setRes_code("OW_MENU_" + level_1_code + level_2_code + level_3_code);
-            	ar.setRes_url(ExcelUtils.getCellValue(7, i, 3));
-        		ar.setRes_icon(ExcelUtils.getCellValue(7, i, 4));
+            	ar.setRes_url(ExcelUtils.getCellValue(sheetNo, i, 3));
+        		ar.setRes_icon(ExcelUtils.getCellValue(sheetNo, i, 4));
         		ar.setRes_name(level3Value);
         		ar.setRes_sname(level3Value);
         		ar.setRes_type("MENU");
         		ar.setPk_parent(currentLevel2PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 7));
         		authResourceList.add(ar);
         		dealMenuUrl(i, ar.getPk_resource(), authResourceUrlList);
         		dealMenuTemplate(i, ar.getPk_resource(), authRoleResourceTemplatelList);

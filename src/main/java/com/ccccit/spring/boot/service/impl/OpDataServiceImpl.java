@@ -102,6 +102,21 @@ public class OpDataServiceImpl implements DataService {
 			r.setPk_role("418304FAAFD5407FA005DF51D1CB13F3");
 			authRoleList.add(r);
 			
+			// 判断机构管理员是否在运营平台
+			String admin = (String)map.get("pk_admin");
+			
+			EntityWrapper<AuthUserResource> aurWapper = new EntityWrapper<>();
+        	aurWapper.eq("pk_user", admin);
+        	aurWapper.eq("pk_resource", (String)map.get("pk_org"));
+			
+			int count = authUserResourceMapper.selectCount(aurWapper);
+			if(count == 0) {
+				AuthUserResource ur = AuthUserResourceFactory.getBean();
+				ur.setPk_user(admin);
+				ur.setPk_resource((String)map.get("pk_org"));
+				authUserResourceMapper.insert(ur);
+			}
+			
 			// 给机构管理员赋管理员岗位
 			AuthUserRole userRole = AuthUserRoleFactory.getBean();
 			userRole.setPk_user((String)map.get("pk_admin"));
@@ -215,6 +230,9 @@ public class OpDataServiceImpl implements DataService {
         		ar.setRes_name(level1Value);
         		ar.setRes_sname(level1Value);
         		ar.setRes_type("MENU");
+        		if(StringUtils.isNotEmpty(ExcelUtils.getCellValue(sheetIndex, i, 7))) {
+        			ar.setIs_enable(ExcelUtils.getCellValue(sheetIndex, i, 7));
+        		}
         		currentLevel1PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealMenuUrl(i, ar.getPk_resource(), authResourceUrlList);
@@ -234,6 +252,9 @@ public class OpDataServiceImpl implements DataService {
         		ar.setRes_name(level2Value);
         		ar.setRes_sname(level2Value);
         		ar.setRes_type("MENU");
+        		if(StringUtils.isNotEmpty(ExcelUtils.getCellValue(sheetIndex, i, 7))) {
+        			ar.setIs_enable(ExcelUtils.getCellValue(sheetIndex, i, 7));
+        		}
         		ar.setPk_parent(currentLevel1PK);
         		currentLevel2PK = ar.getPk_resource();
         		authResourceList.add(ar);
@@ -254,6 +275,9 @@ public class OpDataServiceImpl implements DataService {
         		ar.setRes_sname(level3Value);
         		ar.setRes_type("MENU");
         		ar.setPk_parent(currentLevel2PK);
+        		if(StringUtils.isNotEmpty(ExcelUtils.getCellValue(sheetIndex, i, 7))) {
+        			ar.setIs_enable(ExcelUtils.getCellValue(sheetIndex, i, 7));
+        		}
         		authResourceList.add(ar);
         		dealMenuUrl(i, ar.getPk_resource(), authResourceUrlList);
         		i++;
