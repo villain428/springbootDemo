@@ -1,20 +1,20 @@
 #服务启动端口
 server :  
-  port :  8888
+  port : 8111
 
 #数据库配置
 spring:
     datasource:
         name: test
-        #url: jdbc:postgresql://192.168.1.226:5432/scm5
-        url: jdbc:postgresql://192.168.1.226:6432/scm5_test
+        url: jdbc:postgresql://192.168.1.226:5432/scm5
+        #url: jdbc:postgresql://192.168.1.226:6432/scm5_test
         #url: jdbc:postgresql://192.168.1.226:6432/scm5_20200107
         #url: jdbc:postgresql://log-d1.ccccit.net:5432/scm5_prod
         username: ccccit
         password: ccccit
         #username: zjzy
         #password: db1.prod
-                       # 使用druid数据源
+        # 使用druid数据源
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: org.postgresql.Driver
         filters: stat

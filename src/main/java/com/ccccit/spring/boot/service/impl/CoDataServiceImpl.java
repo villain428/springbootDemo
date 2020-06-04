@@ -118,6 +118,8 @@ public class CoDataServiceImpl implements DataService {
     		RoleInfo roleInfo = entry.getValue();
     		if(Constants.SCM_CO.equals(roleInfo.getSystemCode())) {
     			for(Map map : orgList) {
+    				
+    				// 构建岗位
     				AuthRole r = AuthRoleFactory.getBean();
     				r.setPk_org((String)map.get("pk_org"));
     				r.setPk_system(roleInfo.getSystemCode());
@@ -128,6 +130,7 @@ public class CoDataServiceImpl implements DataService {
     				resetPkRole(r);
     				authRoleList.add(r);
     				
+    				// 构建岗位人员关系（管理员）
     				AuthUserRole userRole = AuthUserRoleFactory.getBean();
     				userRole.setPk_user((String)map.get("pk_admin"));
     				userRole.setPk_role(r.getPk_role());
@@ -138,6 +141,7 @@ public class CoDataServiceImpl implements DataService {
     				ew.eq("role_type", roleInfo.getRoleType());
     				List<AuthRoleResourceTemplate> roleResourceTemplateList = authRoleResourceTemplateMapper.selectList(ew);
     				if(roleResourceTemplateList != null) {
+    					// 从template中复制岗位对应的权限列表，赋给岗位
     					for(AuthRoleResourceTemplate template : roleResourceTemplateList) {
     						AuthUserResource ur = AuthUserResourceFactory.getBean();
     						ur.setPk_resource(template.getPk_resource());
@@ -208,13 +212,14 @@ public class CoDataServiceImpl implements DataService {
     	String currentLevel2PK = null;
     	for(int i = 0; i < count;) {
     		String level1Value = ExcelUtils.getCellValue(sheetNo, i, 0);
-    		if(level1Value != null) {
+    		if(StringUtils.isNotEmpty(level1Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
     			ar.setPk_system(Constants.SCM_CO);
             	ar.setRes_code(ExcelUtils.getCellValue(sheetNo, i, 3));
         		ar.setRes_name(level1Value);
         		ar.setRes_sname(level1Value);
         		ar.setRes_type("FUNCTION");
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 6));
         		currentLevel1PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
@@ -223,7 +228,7 @@ public class CoDataServiceImpl implements DataService {
         		continue;
     		}
     		String level2Value = ExcelUtils.getCellValue(sheetNo, i, 1);
-    		if(level2Value != null) {
+    		if(StringUtils.isNotEmpty(level2Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
     			ar.setPk_system("SCM_CO");
             	ar.setRes_code(ExcelUtils.getCellValue(sheetNo, i, 3));
@@ -231,6 +236,7 @@ public class CoDataServiceImpl implements DataService {
         		ar.setRes_sname(level2Value);
         		ar.setRes_type("FUNCTION");
         		ar.setPk_parent(currentLevel1PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 6));
         		currentLevel2PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
@@ -239,7 +245,7 @@ public class CoDataServiceImpl implements DataService {
         		continue;
     		}
     		String level3Value = ExcelUtils.getCellValue(sheetNo, i, 2);
-    		if(level3Value != null) {
+    		if(StringUtils.isNotEmpty(level3Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
     			ar.setPk_system(Constants.SCM_CO);
             	ar.setRes_code(ExcelUtils.getCellValue(sheetNo, i, 3));
@@ -247,6 +253,7 @@ public class CoDataServiceImpl implements DataService {
         		ar.setRes_sname(level3Value);
         		ar.setRes_type("FUNCTION");
         		ar.setPk_parent(currentLevel2PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 6));
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
         		dealFunctionTemplate(i,ar.getPk_resource(), authRoleResourceTemplateList);
@@ -283,7 +290,7 @@ public class CoDataServiceImpl implements DataService {
     	String currentLevel2PK = null;
     	for(int i = 0; i < count;) {
     		String level1Value = ExcelUtils.getCellValue(sheetNo, i, 0);
-    		if(level1Value != null) {
+    		if(StringUtils.isNotEmpty(level1Value)) {
     			level_2_code = "00";
     			level_3_code = "00";
     			AuthResource ar = AuthResourceFactory.getBean();
@@ -295,6 +302,7 @@ public class CoDataServiceImpl implements DataService {
         		ar.setRes_name(level1Value);
         		ar.setRes_sname(level1Value);
         		ar.setRes_type("MENU");
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 7));
         		currentLevel1PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		
@@ -304,7 +312,7 @@ public class CoDataServiceImpl implements DataService {
         		continue;
     		}
     		String level2Value = ExcelUtils.getCellValue(sheetNo, i, 1);
-    		if(level2Value != null) {
+    		if(StringUtils.isNotEmpty(level2Value)) {
     			level_3_code = "00";
     			AuthResource ar = AuthResourceFactory.getBean();
     			level_2_code = getLevelCode(level_2_code);
@@ -316,6 +324,7 @@ public class CoDataServiceImpl implements DataService {
         		ar.setRes_sname(level2Value);
         		ar.setRes_type("MENU");
         		ar.setPk_parent(currentLevel1PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 7));
         		currentLevel2PK = ar.getPk_resource();
         		authResourceList.add(ar);
         		dealMenuUrl(i, ar.getPk_resource(), authResourceUrlList);
@@ -324,7 +333,7 @@ public class CoDataServiceImpl implements DataService {
         		continue;
     		}
     		String level3Value = ExcelUtils.getCellValue(sheetNo, i, 2);
-    		if(level3Value != null) {
+    		if(StringUtils.isNotEmpty(level3Value)) {
     			AuthResource ar = AuthResourceFactory.getBean();
     			ar.setPk_system(Constants.SCM_CO);
     			level_3_code = getLevelCode(level_3_code);
@@ -335,6 +344,7 @@ public class CoDataServiceImpl implements DataService {
         		ar.setRes_sname(level3Value);
         		ar.setRes_type("MENU");
         		ar.setPk_parent(currentLevel2PK);
+        		ar.setPk_resource(ExcelUtils.getCellValue(sheetNo, i, 7));
         		authResourceList.add(ar);
         		dealMenuUrl(i, ar.getPk_resource(), authResourceUrlList);
         		dealMenuTemplate(i, ar.getPk_resource(), authRoleResourceTemplatelList);

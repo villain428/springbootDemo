@@ -95,6 +95,7 @@ public class ManagerDataServiceImpl implements DataService {
         	r.setRole_code(Constants.SCM_MG + "_1001_" + 1);
         	r.setRole_name("系统初始化机构管理员岗");
         	r.setRole_type("1");
+        	// r.setPk_org();
         	authRoleMapper.insert(r);
         } else {
         	r = roleList.get(0);
