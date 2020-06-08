@@ -1,6 +1,7 @@
 package com.ccccit.spring.boot.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +60,16 @@ public class OpDataServiceImpl implements DataService {
     @Autowired
     private AuthUserRoleMapper authUserRoleMapper;
     
+    private boolean isDev = true;
+    
     private static Set<String> menuPk = new HashSet<>();
+    private static Map<String, String> menuEnableMap = new HashMap<>();
     
     @Override
     public String doExcute() throws Exception {
     	long startTime = System.currentTimeMillis();
     	menuPk.clear();
+    	menuEnableMap.clear();
     	int recordCount = clearDataService.doClear(Constants.SCM_OP);
     	System.out.println("刪除了" + recordCount + "条记录");
     	
@@ -185,6 +190,11 @@ public class OpDataServiceImpl implements DataService {
         		ar.setRes_sname(functionValue);
         		ar.setRes_type("FUNCTION");
         		ar.setPk_parent(ExcelUtils.getCellValue(sheetNo, i, 4));
+        		
+        		if(StringUtils.isNotEmpty(menuEnableMap.get(ar.getPk_parent()))) {
+        			ar.setIs_enable(menuEnableMap.get(ar.getPk_parent()));
+        		}
+        		
         		authResourceList.add(ar);
         		dealFunctionUrl(i,ar.getPk_resource(), authResourceUrlList);
         		
@@ -286,7 +296,12 @@ public class OpDataServiceImpl implements DataService {
     		i++;
     	}
     	for(AuthResource authResource : authResourceList) {
+    		if(isDev) {
+    			authResource.setIs_enable("Y");
+    		}
+    		
     		menuPk.add(authResource.getPk_resource());
+			menuEnableMap.put(authResource.getPk_resource(), authResource.getIs_enable());
     		authResourceMapper.insert(authResource);
     	}
     	
